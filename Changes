@@ -1,0 +1,6 @@
+Changes for Labyrinth-Plugin-CPAN
+=================================
+
+3.50	2014-07-06
+        - abstracted out from CPAN-Testers-WWW-Reports, and
+          CPAN-Testers-WWW-Preferences.
