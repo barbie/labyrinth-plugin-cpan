@@ -1,6 +1,8 @@
 Changes for Labyrinth-Plugin-CPAN
 =================================
 
+        - fixed license fields in META.json to be lists.
+
 3.50	2014-07-06
         - abstracted out from CPAN-Testers-WWW-Reports, and
           CPAN-Testers-WWW-Preferences.
