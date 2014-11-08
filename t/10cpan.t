@@ -169,17 +169,17 @@ SKIP: {
     #diag('my $osnames = '       .Dumper($cpan->osnames));
     #diag('my $perls = '         .Dumper($cpan->mklist_perls));
     
-    my ($osname,$oscode) = $cpan->OSName('GNUKFREEBSD');
-    is($osname,'Debian GNU/kFreeBSD','.. returns correct OS name');
-    is($oscode,'gnukfreebsd','.. returns correct OS code');
+    my @tests = (
+        [ 'GNUKFREEBSD', 'Debian GNU/kFreeBSD', 'gnukfreebsd' ],
+        [ 'BLAH', 'BLAH', 'blah' ],
+        [ undef, undef, undef ]
+    );
 
-    ($osname,$oscode) = $cpan->OSName('BLAH');
-    is($osname,'BLAH','.. returns correct OS name');
-    is($oscode,'blah','.. returns correct OS code');
-
-    ($osname,$oscode) = $cpan->OSName();
-    is($osname,undef,'.. returns no OS name');
-    is($oscode,undef,'.. returns no OS code');
+    for my $test (@tests) {
+        my ($osname,$oscode) = $cpan->OSName($test->[0]);
+        is($osname,$test->[1],'.. returns correct OS name ($test->[0])');
+        is($oscode,$test->[2],'.. returns correct OS code ($test->[0])');
+    }
 
     is( $cpan->check_oncpan('Acme-CPANAuthors-BackPAN-OneHundred','1.02'), 0, '.. not on CPAN');
     is( $cpan->check_oncpan('Acme-CPANAuthors-BackPAN-OneHundred','1.03'), 1, '.. on CPAN');
