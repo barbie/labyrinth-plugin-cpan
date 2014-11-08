@@ -5,6 +5,7 @@ Changes for Labyrinth-Plugin-CPAN
         - FindTester now properly called as a method.
         - better argument validation in GetTesterProfile and OSName.
         - fixed Rename for pause user names.
+        - extended functional test suite.
 
 3.50	2014-07-06
         - abstracted out from CPAN-Testers-WWW-Reports, and
