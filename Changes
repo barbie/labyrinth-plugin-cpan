@@ -3,7 +3,7 @@ Changes for Labyrinth-Plugin-CPAN
 
         - fixed license fields in META.json to be lists.
         - FindTester now properly called as a method.
-        - better argument validation in GetTesterProfile and OSName.
+        - better argument validation in DBX, GetTesterProfile and OSName.
         - fixed Rename for pause user names.
         - extended functional test suite.
 

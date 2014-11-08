@@ -79,18 +79,17 @@ Given an operating system string, returns the values used in the system.
 sub DBX  {
     my ($self,$prefix,$autocommit) = @_;
 
-    if(defined $prefix) {
-        return $DBX{$prefix} if(defined $DBX{$prefix});
+    return                  unless(defined $prefix);
+    return $DBX{$prefix}    if(defined $DBX{$prefix});
 
-        my %hash = map {$_ => $settings{"${prefix}_$_"}} qw(dictionary driver database dbfile dbhost dbport dbuser dbpass);
-        $hash{$_} = $settings{$_}   for(qw(logfile phrasebook));
-        $hash{autocommit} = $autocommit if($autocommit);
+    my %hash = map {$_ => $settings{"${prefix}_$_"}} qw(dictionary driver database dbfile dbhost dbport dbuser dbpass);
+    $hash{$_} = $settings{$_}   for(qw(logfile phrasebook));
+    $hash{autocommit} = $autocommit if($autocommit);
 
-        $DBX{$prefix} = Labyrinth::DBUtils->new(\%hash);
-        die "Unable to connect to '$prefix' database\n" unless($DBX{$prefix});
+    $DBX{$prefix} = Labyrinth::DBUtils->new(\%hash);
+    die "Unable to connect to '$prefix' database\n" unless($DBX{$prefix});
 
-        return $DBX{$prefix};
-    }
+    return $DBX{$prefix};
 }
 
 sub Configure {
