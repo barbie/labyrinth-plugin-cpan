@@ -6,7 +6,7 @@ use Labyrinth::Test::Harness;
 use Labyrinth::Plugin::CPAN;
 use Labyrinth::Variables;
 use Test::Database;
-use Test::More tests => 73;
+use Test::More tests => 83;
 
 my @plugins = qw(
     Labyrinth::Plugin::CPAN
@@ -159,7 +159,7 @@ my $res = $loader->prep(
 diag($loader->error)    unless($res);
 
 SKIP: {
-    skip "Unable to prep the test environment", 73  unless($res);
+    skip "Unable to prep the test environment", 83  unless($res);
 
     $res = is($loader->labyrinth(@plugins),1);
     diag($loader->error)    unless($res);
@@ -204,7 +204,9 @@ SKIP: {
     is_deeply($cpan->merged,        $merged,        '.. matches merged');
     is_deeply($cpan->ignore,        $ignore,        '.. matches ignore');
     is_deeply($cpan->osnames,       $osnames,       '.. matches osnames');
+
     is_deeply($cpan->mklist_perls,  $perls,         '.. matches perls');
+    is_deeply($cpan->mklist_perls,  $perls,         '.. matches perls'); # cached version
 
     #diag('my $exceptions = '    .Dumper($cpan->exceptions));
     #diag('my $symlinks = '      .Dumper($cpan->symlinks));
@@ -227,11 +229,14 @@ SKIP: {
 
     is( $cpan->check_oncpan('Acme-CPANAuthors-BackPAN-OneHundred','1.02'), 0, '.. not on CPAN');
     is( $cpan->check_oncpan('Acme-CPANAuthors-BackPAN-OneHundred','1.03'), 1, '.. on CPAN');
+    is( $cpan->check_oncpan('Acme-CPANAuthors-BackPAN-OneHundred','1.10'), 1, '.. not known, but assume its been uploaded to CPAN');
 
     @tests = (
         [ 'Barbie <barbie@missbarbell.co.uk>', 'barbie@missbarbell.co.uk', 'Barbie', 2, 3 ],
         [ 'Example <barbie@example.com>', 'barbie@example.com', 'CPAN Tester', -1, 0 ],
-        [ undef, 'admin@cpantesters.org', 'CPAN Testers Admin', -1, 0 ]
+        [ 'Barbie', 'admin@cpantesters.org', 'CPAN Testers Admin', -1, 0 ],
+        [ undef, 'admin@cpantesters.org', 'CPAN Testers Admin', -1, 0 ],
+        [ 'Barbie <barbie@missbarbell.co.uk>', 'barbie@missbarbell.co.uk', 'Barbie', 2, 3 ],    # cached version
     );
 
     for my $test (@tests) {
