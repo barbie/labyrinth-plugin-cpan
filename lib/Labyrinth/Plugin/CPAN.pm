@@ -159,7 +159,7 @@ sub GetTesterProfile {
 }
 
 sub FindTester {
-    my $str = shift;
+    my ($self,$str) = @_;
 
     my ($addr)  = Email::Address->parse($str);
     return ('admin@cpantesters.org','CPAN Testers Admin',-1,0) unless($addr);
@@ -173,7 +173,7 @@ sub FindTester {
         my @user = $dbi->GetQuery('hash','GetUserByID',$rows[0]->{userid});
         $TESTER{$address}{userid}    = $user[0]->{userid};
         $TESTER{$address}{name}      = $user[0]->{realname};
-        $TESTER{$address}{addressid} = $user[0]->{addressid} || 0;
+        $TESTER{$address}{addressid} = $rows[0]->{addressid} || 0;
     }
 
     return ($address,$TESTER{$address}{name},$TESTER{$address}{userid},$TESTER{$address}{addressid});
