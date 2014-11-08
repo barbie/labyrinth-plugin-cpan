@@ -201,7 +201,7 @@ CREATE TABLE `profile` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 INSERT INTO `profile` VALUES (1,'Barbie','BARBIE','barbie@cpan.org');
-INSERT INTO `profile` VALUES (2,'Barbie',undef,'barbie@cpantesters.org');
+INSERT INTO `profile` VALUES (2,'Barbie',NULL,'barbie@cpantesters.org');
 
 
 DROP TABLE IF EXISTS `address`;

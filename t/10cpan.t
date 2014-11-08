@@ -236,7 +236,7 @@ SKIP: {
 
     for my $test (@tests) {
         my ($email,$name,$userid,$addressid) = $cpan->FindTester($test->[0]);
-        is($email,      $test->[1], ".. email matches for FindTester ($test->[0])");
+        is($email,      $test->[1], ".. email matches for FindTester (".($test->[0]||'').")");
         is($name,       $test->[2], '.. name matches for FindTester');
         is($userid,     $test->[3], '.. userid matches for FindTester');
         is($addressid,  $test->[4], '.. addressid matches for FindTester');
@@ -254,10 +254,8 @@ SKIP: {
     is_deeply($profile,undef);      # no guid or address
     $profile = $cpan->GetTesterProfile('guid-test-7','neil@bowers.com');
     is_deeply($profile,$profile3);  # no profile
-    diag("my $profile3 = " . Dumper($profile));
     $profile = $cpan->GetTesterProfile('guid-test-8','barbie@cpantesters.org');
     is_deeply($profile,$profile4);  # no PAUSE account
-    diag("my $profile4 = " . Dumper($profile));
 
     @tests = (
         [ 'pause:BARBIE', 'BARBIE', undef, 'BARBIE' ],
