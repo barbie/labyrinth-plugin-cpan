@@ -132,11 +132,15 @@ sub Configure {
 
 sub GetTesterProfile {
     my ($self,$guid,$addr) = @_;
+    my @rows;
 
+    return  unless($guid);
     return $TESTERS{$guid}    if($TESTERS{$guid});
     
     # check report mapping
-    my @rows = $dbi->GetQuery('hash','GetTesterProfile',$guid);
+    if($guid) {
+        @rows = $dbi->GetQuery('hash','GetTesterProfile',$guid);
+    }
 
     # check previous tester mapping
     if(!@rows && $addr) {
@@ -251,7 +255,6 @@ sub mklist_perls {
     $self->perls(\@perls);
     return \@perls;
 }
-
 
 1;
 
