@@ -6,7 +6,7 @@ use Labyrinth::Test::Harness;
 use Labyrinth::Plugin::CPAN;
 use Labyrinth::Variables;
 use Test::Database;
-use Test::More tests => 59;
+use Test::More tests => 61;
 
 my @plugins = qw(
     Labyrinth::Plugin::CPAN
@@ -138,7 +138,7 @@ my $res = $loader->prep(
 diag($loader->error)    unless($res);
 
 SKIP: {
-    skip "Unable to prep the test environment", 59  unless($res);
+    skip "Unable to prep the test environment", 61  unless($res);
 
     $res = is($loader->labyrinth(@plugins),1);
     diag($loader->error)    unless($res);
@@ -151,6 +151,10 @@ SKIP: {
 
     my $dbx = $cpan->DBX('cpanstats');
     isa_ok($dbx,'Labyrinth::DBUtils');
+    $dbx = $cpan->DBX();
+    is($dbx,undef);
+    $dbx = $cpan->DBX('cpanstats');
+    isa_ok($dbx,'Labyrinth::DBUtils');  # cached version
     my @rows = $dbx->GetQuery('array','GetAuthorDists','BARBIE');
     is_deeply(\@rows,$dists,'.. got matching author dists');
 
@@ -184,7 +188,7 @@ SKIP: {
     is( $cpan->check_oncpan('Acme-CPANAuthors-BackPAN-OneHundred','1.02'), 0, '.. not on CPAN');
     is( $cpan->check_oncpan('Acme-CPANAuthors-BackPAN-OneHundred','1.03'), 1, '.. on CPAN');
 
-    my @tests = (
+    @tests = (
         [ 'Barbie <barbie@missbarbell.co.uk>', 'barbie@missbarbell.co.uk', 'Barbie', 2, 2 ],
         [ 'Example <barbie@example.com>', 'barbie@example.com', 'CPAN Tester', -1, 0 ],
         [ undef, 'admin@cpantesters.org', 'CPAN Testers Admin', -1, 0 ]
@@ -223,7 +227,7 @@ SKIP: {
         $cpan->Rename();
         is($tvars{user}{name},      $test->[0],".. Rename name '$test->[0]'");
         is($tvars{user}{author},    $test->[1],".. Rename author '$test->[0]'");
-        is($tvars{user}{test},    $test->[2],".. Rename test '$test->[0]'");
+        is($tvars{user}{tester},    $test->[2],".. Rename tester '$test->[0]'");
         is($tvars{user}{fakename},  $test->[3],".. Rename fakename '$test->[0]'");
     }
 }
