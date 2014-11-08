@@ -6,7 +6,7 @@ use Labyrinth::Test::Harness;
 use Labyrinth::Plugin::CPAN;
 use Labyrinth::Variables;
 use Test::Database;
-use Test::More tests => 47;
+use Test::More tests => 59;
 
 my @plugins = qw(
     Labyrinth::Plugin::CPAN
@@ -138,7 +138,7 @@ my $res = $loader->prep(
 diag($loader->error)    unless($res);
 
 SKIP: {
-    skip "Unable to prep the test environment", 47  unless($res);
+    skip "Unable to prep the test environment", 59  unless($res);
 
     $res = is($loader->labyrinth(@plugins),1);
     diag($loader->error)    unless($res);
@@ -184,18 +184,18 @@ SKIP: {
     is( $cpan->check_oncpan('Acme-CPANAuthors-BackPAN-OneHundred','1.02'), 0, '.. not on CPAN');
     is( $cpan->check_oncpan('Acme-CPANAuthors-BackPAN-OneHundred','1.03'), 1, '.. on CPAN');
 
-    my @testers = (
+    my @tests = (
         [ 'Barbie <barbie@missbarbell.co.uk>', 'barbie@missbarbell.co.uk', 'Barbie', 2, 2 ],
         [ 'Example <barbie@example.com>', 'barbie@example.com', 'CPAN Tester', -1, 0 ],
         [ undef, 'admin@cpantesters.org', 'CPAN Testers Admin', -1, 0 ]
     );
 
-    for my $tester (@testers) {
-        my ($email,$name,$userid,$addressid) = $cpan->FindTester($tester->[0]);
-        is($email,      $tester->[1], ".. email matches for FindTester ($tester->[0])");
-        is($name,       $tester->[2], '.. name matches for FindTester');
-        is($userid,     $tester->[3], '.. userid matches for FindTester');
-        is($addressid,  $tester->[4], '.. addressid matches for FindTester');
+    for my $test (@tests) {
+        my ($email,$name,$userid,$addressid) = $cpan->FindTester($test->[0]);
+        is($email,      $test->[1], ".. email matches for FindTester ($test->[0])");
+        is($name,       $test->[2], '.. name matches for FindTester');
+        is($userid,     $test->[3], '.. userid matches for FindTester');
+        is($addressid,  $test->[4], '.. addressid matches for FindTester');
     }
 
     my $profile = $cpan->GetTesterProfile('guid-test-4');
@@ -209,26 +209,23 @@ SKIP: {
     $profile = $cpan->GetTesterProfile();
     is_deeply($profile,undef); # no guid or address
 
-    $loader->refresh( \@plugins, { user => { name => 'pause:BARBIE', author => undef, fakename => undef, tester => undef } } );
-    $cpan->Rename();
-    is($tvars{user}{name},'pause:BARBIE','.. Rename pause:BARBIE');
-    is($tvars{user}{author},'BARBIE');
-    is($tvars{user}{tester},undef);
-    is($tvars{user}{fakename},'BARBIE');
+    @tests = (
+        [ 'pause:BARBIE', 'BARBIE', undef, 'BARBIE' ],
+        [ 'imposter:Barbie', 'BARBIE', undef, 'BARBIE' ],
+        [ 'imposter:2', undef, 2, 'Barbie' ],
+        [ 'imposter:Example', 'EXAMPLE', undef, 'EXAMPLE' ],
+        [ 'imposter:', undef, undef, undef ],
+        [ 'pause:', undef, undef, undef ]
+    );
 
-    $loader->refresh( \@plugins, { user => { name => 'imposter:Barbie', author => undef, fakename => undef, tester => undef } } );
-    $cpan->Rename();
-    is($tvars{user}{name},'imposter:Barbie','.. Rename imposter:Barbie');
-    is($tvars{user}{author},'BARBIE');
-    is($tvars{user}{tester},undef);
-    is($tvars{user}{fakename},'BARBIE');
-
-    $loader->refresh( \@plugins, { user => { name => 'imposter:2', author => undef, fakename => undef, tester => undef } } );
-    $cpan->Rename();
-    is($tvars{user}{name},'imposter:2','.. Rename imposter:2');
-    is($tvars{user}{author},undef);
-    is($tvars{user}{tester},2);
-    is($tvars{user}{fakename},'Barbie');
+    for my $test (@tests) {
+        $loader->refresh( \@plugins, { user => { name => $test->[0], author => undef, fakename => undef, test => undef } } );
+        $cpan->Rename();
+        is($tvars{user}{name},      $test->[0],".. Rename name '$test->[0]'");
+        is($tvars{user}{author},    $test->[1],".. Rename author '$test->[0]'");
+        is($tvars{user}{test},    $test->[2],".. Rename test '$test->[0]'");
+        is($tvars{user}{fakename},  $test->[3],".. Rename fakename '$test->[0]'");
+    }
 }
 
 sub create_database {
