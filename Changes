@@ -8,6 +8,8 @@ Changes for Labyrinth-Plugin-CPAN
         - extended functional test suite.
         - specifically store autocomit connections.
         - better file checks in Configure.
+        - upgraded to Labyrinth-5.27.
+        - upgraded to Labyrinth-Plugin-Core-5.18.
 
 3.50	2014-07-06
         - abstracted out from CPAN-Testers-WWW-Reports, and

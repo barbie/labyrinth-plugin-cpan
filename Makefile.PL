@@ -17,8 +17,8 @@ WriteMakefile(
         # prereqs
         'Class::Accessor::Fast'     => '0',
         'Email::Address'            => '0',
-        'Labyrinth'                 => '5.20',
-        'Labyrinth::Plugin::Core'   => '5.15',
+        'Labyrinth'                 => '5.27',
+        'Labyrinth::Plugin::Core'   => '5.18',
         'Sort::Versions'            => '0',
 
         # build/test prereqs
