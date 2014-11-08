@@ -6,7 +6,7 @@ use Labyrinth::Test::Harness;
 use Labyrinth::Plugin::CPAN;
 use Labyrinth::Variables;
 use Test::Database;
-use Test::More tests => 71;
+use Test::More tests => 73;
 
 my @plugins = qw(
     Labyrinth::Plugin::CPAN
@@ -93,27 +93,47 @@ my $dists = [
 ];
 
 my $profile1 = {
-          'display' => 'Barbie (BARBIE)',
-          'addressid' => '4',
-          'fulldate' => '201411010004',
-          'email' => 'barbie@missbarbell.co.uk',
           'guid' => 'guid-test-4',
-          'pause' => 'BARBIE',
           'id' => '4',
+          'addressid' => '4',
           'testerid' => '1',
           'name' => 'Barbie',
+          'pause' => 'BARBIE',
           'contact' => 'barbie@cpan.org',
-          'address' => 'Barbie <barbie@missbarbell.co.uk>'
+          'address' => 'Barbie <barbie@missbarbell.co.uk>',
+          'email' => 'barbie@missbarbell.co.uk',
+          'display' => 'Barbie (BARBIE)',
+          'fulldate' => '201411010004'
         };
 my $profile2 = {
-          'address' => 'Barbie <barbie@missbarbell.co.uk>',
           'testerid' => '1',
+          'addressid' => '4',
           'name' => 'Barbie',
           'pause' => 'BARBIE',
-          'email' => 'barbie@missbarbell.co.uk',
-          'addressid' => '4',
           'contact' => 'barbie@cpan.org',
+          'address' => 'Barbie <barbie@missbarbell.co.uk>',
+          'email' => 'barbie@missbarbell.co.uk',
           'display' => 'Barbie (BARBIE)'
+        };
+my $profile3 = {
+          'addressid' => '1',
+          'testerid' => '0',
+          'name' => undef,
+          'pause' => undef,
+          'contact' => undef,
+          'address' => 'neil@bowers.com',
+          'email' => 'neil@bowers.com',
+          'display' => 'neil@bowers.com'
+        };
+my $profile4 = {
+          'addressid' => '2',
+          'testerid' => '2',
+          'name' => 'Barbie',
+          'pause' => undef,
+          'contact' => 'barbie@cpantesters.org',
+          'address' => 'barbie@cpantesters.org',
+          'email' => 'barbie@cpantesters.org',
+          'display' => 'Barbie'
         };
 
 # -----------------------------------------------------------------------------
@@ -139,7 +159,7 @@ my $res = $loader->prep(
 diag($loader->error)    unless($res);
 
 SKIP: {
-    skip "Unable to prep the test environment", 71  unless($res);
+    skip "Unable to prep the test environment", 73  unless($res);
 
     $res = is($loader->labyrinth(@plugins),1);
     diag($loader->error)    unless($res);
@@ -209,7 +229,7 @@ SKIP: {
     is( $cpan->check_oncpan('Acme-CPANAuthors-BackPAN-OneHundred','1.03'), 1, '.. on CPAN');
 
     @tests = (
-        [ 'Barbie <barbie@missbarbell.co.uk>', 'barbie@missbarbell.co.uk', 'Barbie', 2, 2 ],
+        [ 'Barbie <barbie@missbarbell.co.uk>', 'barbie@missbarbell.co.uk', 'Barbie', 2, 3 ],
         [ 'Example <barbie@example.com>', 'barbie@example.com', 'CPAN Tester', -1, 0 ],
         [ undef, 'admin@cpantesters.org', 'CPAN Testers Admin', -1, 0 ]
     );
@@ -225,13 +245,19 @@ SKIP: {
     my $profile = $cpan->GetTesterProfile('guid-test-4');
     is_deeply($profile,$profile1);
     $profile = $cpan->GetTesterProfile('guid-test-4');
-    is_deeply($profile,$profile1); # second call should use cache
+    is_deeply($profile,$profile1);  # second call should use cache
     $profile = $cpan->GetTesterProfile('guid-test-5','Barbie <barbie@missbarbell.co.uk>');
-    is_deeply($profile,$profile2); # guid not found, using tester address
+    is_deeply($profile,$profile2);  # guid not found, using tester address
     $profile = $cpan->GetTesterProfile('guid-test-6');
-    is_deeply($profile,undef); # no guid, using tester address
+    is_deeply($profile,undef);      # no tester address
     $profile = $cpan->GetTesterProfile();
-    is_deeply($profile,undef); # no guid or address
+    is_deeply($profile,undef);      # no guid or address
+    $profile = $cpan->GetTesterProfile('guid-test-7','neil@bowers.com');
+    is_deeply($profile,$profile3);  # no profile
+    diag("my $profile3 = " . Dumper($profile));
+    $profile = $cpan->GetTesterProfile('guid-test-8','barbie@cpantesters.org');
+    is_deeply($profile,$profile4);  # no PAUSE account
+    diag("my $profile4 = " . Dumper($profile));
 
     @tests = (
         [ 'pause:BARBIE', 'BARBIE', undef, 'BARBIE' ],

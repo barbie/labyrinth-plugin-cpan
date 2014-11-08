@@ -201,7 +201,7 @@ CREATE TABLE `profile` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 INSERT INTO `profile` VALUES (1,'Barbie','BARBIE','barbie@cpan.org');
-INSERT INTO `profile` VALUES (2,'Neil Bowers','NEILB','neilb@cpan.org');
+INSERT INTO `profile` VALUES (2,'Barbie',undef,'barbie@cpantesters.org');
 
 
 DROP TABLE IF EXISTS `address`;
@@ -215,8 +215,8 @@ CREATE TABLE `address` (
   KEY `IXADDRESS` (`address`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `address` VALUES (1,2,'neil@bowers.com','neil@bowers.com');
-INSERT INTO `address` VALUES (2,1,'barbie@missbarbell.co.uk','barbie@missbarbell.co.uk');
+INSERT INTO `address` VALUES (1,0,'neil@bowers.com','neil@bowers.com');
+INSERT INTO `address` VALUES (2,2,'barbie@cpantesters.org','barbie@cpantesters.org');
 INSERT INTO `address` VALUES (3,1,'barbie@missbarbell.co.uk (Barbie)','barbie@missbarbell.co.uk');
 INSERT INTO `address` VALUES (4,1,'Barbie <barbie@missbarbell.co.uk>','barbie@missbarbell.co.uk');
 
