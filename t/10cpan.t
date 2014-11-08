@@ -6,7 +6,7 @@ use Labyrinth::Test::Harness;
 use Labyrinth::Plugin::CPAN;
 use Labyrinth::Variables;
 use Test::Database;
-use Test::More tests => 39;
+use Test::More tests => 47;
 
 my @plugins = qw(
     Labyrinth::Plugin::CPAN
@@ -119,7 +119,7 @@ my $profile2 = {
 # -----------------------------------------------------------------------------
 # Set up
 
-my $loader = Labyrinth::Test::Harness->new( keep => 1 );
+my $loader = Labyrinth::Test::Harness->new( keep => 0 );
 my $dir = $loader->directory;
 
 my $cpanstats = create_database();
@@ -138,7 +138,7 @@ my $res = $loader->prep(
 diag($loader->error)    unless($res);
 
 SKIP: {
-    skip "Unable to prep the test environment", 39  unless($res);
+    skip "Unable to prep the test environment", 47  unless($res);
 
     $res = is($loader->labyrinth(@plugins),1);
     diag($loader->error)    unless($res);
@@ -184,11 +184,19 @@ SKIP: {
     is( $cpan->check_oncpan('Acme-CPANAuthors-BackPAN-OneHundred','1.02'), 0, '.. not on CPAN');
     is( $cpan->check_oncpan('Acme-CPANAuthors-BackPAN-OneHundred','1.03'), 1, '.. on CPAN');
 
-    my ($email,$name,$userid,$addressid) = $cpan->FindTester('Barbie <barbie@missbarbell.co.uk>');
-    is($email,      'barbie@missbarbell.co.uk', '.. email matches for FindTester');
-    is($name,       'Barbie',                   '.. name matches for FindTester');
-    is($userid,     '2',                        '.. userid matches for FindTester');
-    is($addressid,  '2',                        '.. addressid matches for FindTester');
+    my @testers = (
+        [ 'Barbie <barbie@missbarbell.co.uk>', 'barbie@missbarbell.co.uk', 'Barbie', 2, 2 ],
+        [ 'Example <barbie@example.com>', 'barbie@example.com', 'CPAN Tester', -1, 0 ],
+        [ undef, 'admin@cpantesters.org', 'CPAN Testers Admin', -1, 0 ]
+    );
+
+    for my $tester (@testers) {
+        my ($email,$name,$userid,$addressid) = $cpan->FindTester($tester->[0]);
+        is($email,      $tester->[1], ".. email matches for FindTester ($tester->[0])");
+        is($name,       $tester->[2], '.. name matches for FindTester');
+        is($userid,     $tester->[3], '.. userid matches for FindTester');
+        is($addressid,  $tester->[4], '.. addressid matches for FindTester');
+    }
 
     my $profile = $cpan->GetTesterProfile('guid-test-4');
     is_deeply($profile,$profile1);
