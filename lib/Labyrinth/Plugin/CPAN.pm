@@ -202,6 +202,8 @@ sub Rename {
 
 sub OSName {
     my ($self,$name) = @_;
+    return  unless($name);
+
     my $code = lc $name;
     $code =~ s/[^\w]+//g;
     my $OSNAMES = $self->osnames;
