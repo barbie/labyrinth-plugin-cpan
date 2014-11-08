@@ -6,7 +6,7 @@ use Labyrinth::Test::Harness;
 use Labyrinth::Plugin::CPAN;
 use Labyrinth::Variables;
 use Test::Database;
-use Test::More tests => 61;
+use Test::More tests => 71;
 
 my @plugins = qw(
     Labyrinth::Plugin::CPAN
@@ -128,7 +128,8 @@ my $res = $loader->prep(
     sql     => [ "t/data/test-base.sql" ],
     files   => { 
         't/data/phrasebook.ini' => 'cgi-bin/config/phrasebook.ini',
-        't/data/cpan-config.ini' => 'cgi-bin/config/cpan-config.ini'
+        't/data/cpan-config.ini' => 'cgi-bin/config/cpan-config.ini',
+        't/data/cpan-config-empty.ini' => 'cgi-bin/config/cpan-config-empty.ini'
     },
     config  => {
         'INTERNAL'  => { logclear => 0, cpan_config => $dir . '/cgi-bin/config/cpan-config.ini' },
@@ -138,7 +139,7 @@ my $res = $loader->prep(
 diag($loader->error)    unless($res);
 
 SKIP: {
-    skip "Unable to prep the test environment", 61  unless($res);
+    skip "Unable to prep the test environment", 71  unless($res);
 
     $res = is($loader->labyrinth(@plugins),1);
     diag($loader->error)    unless($res);
@@ -153,11 +154,30 @@ SKIP: {
     isa_ok($dbx,'Labyrinth::DBUtils');
     $dbx = $cpan->DBX();
     is($dbx,undef);
+    $dbx = $cpan->DBX('unknown');
+    is($dbx,undef);
     $dbx = $cpan->DBX('cpanstats');
     isa_ok($dbx,'Labyrinth::DBUtils');  # cached version
+    $dbx = $cpan->DBX('cpanstats',1);
+    isa_ok($dbx,'Labyrinth::DBUtils');  # fresh version
     my @rows = $dbx->GetQuery('array','GetAuthorDists','BARBIE');
     is_deeply(\@rows,$dists,'.. got matching author dists');
 
+    $settings{cpan_config} = $dir . '/cgi-bin/config/cpan-config-empty.ini';
+    $cpan->Configure();
+    is_deeply($cpan->exceptions,    undef,  '.. matches exceptions');
+    is_deeply($cpan->symlinks,      undef,  '.. matches symlinks');
+    is_deeply($cpan->merged,        undef,  '.. matches merged');
+    is_deeply($cpan->ignore,        undef,  '.. matches ignore');
+
+    $settings{cpan_config} = '';
+    $cpan->Configure();
+    is_deeply($cpan->exceptions,    undef,  '.. matches exceptions');
+    is_deeply($cpan->symlinks,      undef,  '.. matches symlinks');
+    is_deeply($cpan->merged,        undef,  '.. matches merged');
+    is_deeply($cpan->ignore,        undef,  '.. matches ignore');
+
+    $settings{cpan_config} = $dir . '/cgi-bin/config/cpan-config.ini';
     $cpan->Configure();
     is_deeply($cpan->exceptions,    $exceptions,    '.. matches exceptions');
     is_deeply($cpan->symlinks,      $symlinks,      '.. matches symlinks');
