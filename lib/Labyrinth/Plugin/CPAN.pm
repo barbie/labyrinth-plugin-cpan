@@ -97,21 +97,24 @@ sub DBX  {
 
 sub Configure {
     my $self = shift;
-    my $cfg = Config::IniFiles->new( -file => $settings{cpan_config} );
+    my $cfg;
+    
+    $cfg = Config::IniFiles->new( -file => $settings{cpan_config} )
+        if(-f $settings{cpan_config});
 
-    if($cfg->SectionExists('EXCEPTIONS')) {
+    if($cfg && $cfg->SectionExists('EXCEPTIONS')) {
         my @values = $cfg->val('EXCEPTIONS','LIST');
         $self->exceptions( join('|',@values) );
     }
 
-    if($cfg->SectionExists('IGNORE')) {
+    if($cfg && $cfg->SectionExists('IGNORE')) {
         my @values = $cfg->val('IGNORE','LIST');
         my %IGNORE;
         $IGNORE{$_} = 1  for(@values);
         $self->ignore( \%IGNORE );
     }
 
-    if($cfg->SectionExists('SYMLINKS')) {
+    if($cfg && $cfg->SectionExists('SYMLINKS')) {
         my %SYMLINKS;
         $SYMLINKS{$_} = $cfg->val('SYMLINKS',$_)  for($cfg->Parameters('SYMLINKS'));
         $self->symlinks( \%SYMLINKS );
