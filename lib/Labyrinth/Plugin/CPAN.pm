@@ -143,9 +143,7 @@ sub GetTesterProfile {
     return $TESTERS{$guid}    if($TESTERS{$guid});
     
     # check report mapping
-    if($guid) {
-        @rows = $dbi->GetQuery('hash','GetTesterProfile',$guid);
-    }
+    @rows = $dbi->GetQuery('hash','GetTesterProfile',$guid);
 
     # check previous tester mapping
     if(!@rows && $addr) {
