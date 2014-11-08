@@ -185,14 +185,14 @@ sub FindTester {
 
 sub Rename {
     LogDebug("Rename: user=$tvars{user}{name}");
-    if($tvars{user}{name} =~ /pause:(\d+)/) {
+    if($tvars{user}{name} =~ /pause:(\w+)/) {
         $tvars{user}{author} = uc $1;
         $tvars{user}{fakename} = $tvars{user}{author};
         LogDebug("Rename: author=$tvars{user}{author}, fakename=$tvars{user}{fakename}");
     } elsif($tvars{user}{name} =~ /imposter:(\d+)/) {
         $tvars{user}{tester} = $1;
-        LogDebug("Rename: tester=$tvars{user}{tester}, fakename=$tvars{user}{fakename}");
         $tvars{user}{fakename} = UserName($tvars{user}{tester});
+        LogDebug("Rename: tester=$tvars{user}{tester}, fakename=$tvars{user}{fakename}");
     } elsif($tvars{user}{name} =~ /imposter:([A-Z]+)/i) {
         $tvars{user}{author}   = uc $1;
         $tvars{user}{fakename} = $tvars{user}{author};
