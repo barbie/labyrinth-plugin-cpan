@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:                     Labyrinth-Plugin-CPAN
-version:                  3.50
+version:                  3.51
 abstract:                 CPAN Testers plugin for the Labyrinth framework
 author:
   - Barbie <barbie@cpan.org>
@@ -28,7 +28,7 @@ build_requires:
 provides:
   Labyrinth::Plugin::CPAN:
     file:     lib/Labyrinth/Plugin/CPAN.pm
-    version:  3.50
+    version:  3.51
 
 no_index:
   directory:
