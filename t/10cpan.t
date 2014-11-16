@@ -1,7 +1,6 @@
 #!/usr/bin/perl -w
 use strict;
 
-use Data::Dumper;
 use Labyrinth::Test::Harness;
 use Labyrinth::Plugin::CPAN;
 use Labyrinth::Variables;
@@ -208,13 +207,6 @@ SKIP: {
     is_deeply($cpan->mklist_perls,  $perls,         '.. matches perls');
     is_deeply($cpan->mklist_perls,  $perls,         '.. matches perls'); # cached version
 
-    #diag('my $exceptions = '    .Dumper($cpan->exceptions));
-    #diag('my $symlinks = '      .Dumper($cpan->symlinks));
-    #diag('my $merged = '        .Dumper($cpan->merged));
-    #diag('my $ignore = '        .Dumper($cpan->ignore));
-    #diag('my $osnames = '       .Dumper($cpan->osnames));
-    #diag('my $perls = '         .Dumper($cpan->mklist_perls));
-    
     my @tests = (
         [ 'GNUKFREEBSD', 'Debian GNU/kFreeBSD', 'gnukfreebsd' ],
         [ 'BLAH', 'BLAH', 'blah' ],
