@@ -23,6 +23,7 @@ recommends:
   Test::Pod::Coverage:      0.08
 build_requires:
   IO::File:                 0
+  Labyrinth::Test::Harness: 1.05
   Test::More:               0.70
 
 provides:
