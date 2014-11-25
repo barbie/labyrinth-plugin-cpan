@@ -1,6 +1,7 @@
 Changes for Labyrinth-Plugin-CPAN
 =================================
 
+3.52    2014-11-25
         - Labyrinth::Test::Harness & Test::Database now prerequisites.
 
 3.51    2014-11-14
