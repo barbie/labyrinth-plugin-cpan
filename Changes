@@ -1,6 +1,8 @@
 Changes for Labyrinth-Plugin-CPAN
 =================================
 
+        - skip tests if unable to load a MySQL database.
+
 3.52    2014-11-25
         - Labyrinth::Test::Harness & Test::Database now prerequisites.
 

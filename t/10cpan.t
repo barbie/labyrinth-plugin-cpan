@@ -158,7 +158,7 @@ my $res = $loader->prep(
 diag($loader->error)    unless($res);
 
 SKIP: {
-    skip "Unable to prep the test environment", 83  unless($res);
+    skip "Unable to prep the test environment", 83  unless($res && $cpanstats);
 
     $res = is($loader->labyrinth(@plugins),1);
     diag($loader->error)    unless($res);
@@ -276,8 +276,8 @@ SKIP: {
 sub create_database {
     my $td1 = Test::Database->handle( 'mysql' );
     unless($td1) {
-        die "Unable to load a test database instance.";
-        return 0;
+        diag "Unable to load a test database instance.";
+        return;
     }
 
     Labyrinth::Test::Harness::create_mysql_databases($td1,['t/data/test-cpanstats.sql']);
