@@ -1,6 +1,7 @@
 Changes for Labyrinth-Plugin-CPAN
 =================================
 
+3.53    2014-12-07
         - skip tests if unable to load a MySQL database.
 
 3.52    2014-11-25
