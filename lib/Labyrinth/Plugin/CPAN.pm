@@ -77,6 +77,11 @@ Given an operating system string, returns the values used in the system.
 Given a distribution name and a version, returns the index value used by the 
 system.
 
+=item OnCPAN
+
+Given a distribution name and a version, returns whether stored on CPAN (1) or 
+not (0).
+
 =back
 
 =cut
@@ -136,11 +141,11 @@ sub Configure {
     }
     $self->osnames($OSNAMES);
 
-    my $INDEX  = {};
-    my @rows = $dbi->GetQuery('hash','AllDistIndices');
+    my $INDEX = {};
+    @rows = $dbi->GetQuery('hash','AllDistIndices');
     for my $row (@rows) {
-        $INDEX->{$row->{dist}{$row->{version}}{id}   = $row->{uploadid};
-        $INDEX->{$row->{dist}{$row->{version}}{type} = $row->{type};
+        $INDEX->{$row->{dist}}{$row->{version}}{id}   = $row->{uploadid};
+        $INDEX->{$row->{dist}}{$row->{version}}{type} = $row->{type};
     }
     $self->distindex($INDEX);
 }
