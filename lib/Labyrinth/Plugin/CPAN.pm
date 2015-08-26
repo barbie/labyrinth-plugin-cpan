@@ -39,7 +39,7 @@ my (%DBX,%TESTER,%TESTERS);
 #----------------------------------------------------------------------------
 # Public Interface Functions
 
-__PACKAGE__->mk_accessors(qw( perls osnames exceptions symlinks merged ignore ));
+__PACKAGE__->mk_accessors(qw( perls osnames exceptions symlinks merged ignore distindex ));
 
 =head1 METHODS
 
@@ -71,6 +71,11 @@ and/or purposes.
 =item OSName
 
 Given an operating system string, returns the values used in the system.
+
+=item DistIndex
+
+Given a distribution name and a version, returns the index value used by the 
+system.
 
 =back
 
@@ -130,6 +135,14 @@ sub Configure {
         $OSNAMES->{lc $row->{osname}} = $row->{ostitle};
     }
     $self->osnames($OSNAMES);
+
+    my $INDEX  = {};
+    my @rows = $dbi->GetQuery('hash','AllDistIndices');
+    for my $row (@rows) {
+        $INDEX->{$row->{dist}{$row->{version}}{id}   = $row->{uploadid};
+        $INDEX->{$row->{dist}{$row->{version}}{type} = $row->{type};
+    }
+    $self->distindex($INDEX);
 }
 
 #----------------------------------------------------------------------------
@@ -211,6 +224,26 @@ sub OSName {
     $code =~ s/[^\w]+//g;
     my $OSNAMES = $self->osnames;
     return(($OSNAMES->{$code} || uc($name)), $code);
+}
+
+sub DistIndex {
+    my ($self,$dist,$version) = @_;
+    return  unless($dist && $version);
+
+    my $INDEX = $self->distindex;
+    return $INDEX->{$dist}{$version}{id} || 0;
+}
+
+sub OnCPAN {
+    my ($self,$dist,$version) = @_;
+    return  unless($dist && $version);
+
+    my $INDEX = $self->distindex;
+    my $type = $INDEX->{$dist}{$version}{type} || undef;
+
+    return 1    unless($type);          # assume it's a new release
+    return 0    if($type eq 'backpan'); # on backpan only
+    return 1;                           # on cpan or new upload
 }
 
 #----------------------------------------------------------------------------

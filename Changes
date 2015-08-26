@@ -1,6 +1,8 @@
 Changes for Labyrinth-Plugin-CPAN
 =================================
 
+        - added distribution index lookups.
+
 3.53    2014-12-07
         - skip tests if unable to load a MySQL database.
 
