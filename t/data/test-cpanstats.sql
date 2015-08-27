@@ -19,4 +19,3 @@ INSERT INTO `uploads` VALUES (2,'backpan','BARBIE','Acme-CPANAuthors-BackPAN-One
 INSERT INTO `uploads` VALUES (3,'backpan','BARBIE','Acme-CPANAuthors-BackPAN-OneHundred','1.02','Acme-CPANAuthors-BackPAN-OneHundred-1.02.tar.gz',1403834704);
 INSERT INTO `uploads` VALUES (4,'cpan','BARBIE','Acme-CPANAuthors-BackPAN-OneHundred','1.03','Acme-CPANAuthors-BackPAN-OneHundred-1.03.tar.gz',1408262115);
 INSERT INTO `uploads` VALUES (5,'cpan','BARBIE','Acme-CPANAuthors-BackPAN-OneHundred','1.04','Acme-CPANAuthors-BackPAN-OneHundred-1.04.tar.gz',1412417073);
-
