@@ -233,7 +233,7 @@ sub OSName {
 
 sub DistIndex {
     my ($self,$dist,$version) = @_;
-    return  unless($dist && $version);
+    return 0    unless(defined $dist && defined $version);
 
     my $INDEX = $self->distindex;
     return $INDEX->{$dist}{$version}{id} || 0;
@@ -241,7 +241,7 @@ sub DistIndex {
 
 sub OnCPAN {
     my ($self,$dist,$version) = @_;
-    return  unless($dist && $version);
+    return  unless(defined $dist && defined $version);
 
     my $INDEX = $self->distindex;
     my $type = $INDEX->{$dist}{$version}{type} || undef;
