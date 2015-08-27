@@ -5,7 +5,7 @@ use Labyrinth::Test::Harness;
 use Labyrinth::Plugin::CPAN;
 use Labyrinth::Variables;
 use Test::Database;
-use Test::More tests => 89;
+use Test::More tests => 91;
 
 my @plugins = qw(
     Labyrinth::Plugin::CPAN
@@ -158,7 +158,7 @@ my $res = $loader->prep(
 diag($loader->error)    unless($res);
 
 SKIP: {
-    skip "Unable to prep the test environment", 89  unless($res && $cpanstats);
+    skip "Unable to prep the test environment", 91  unless($res && $cpanstats);
 
     $res = is($loader->labyrinth(@plugins),1);
     diag($loader->error)    unless($res);
@@ -222,10 +222,12 @@ SKIP: {
     is( $cpan->DistIndex('Acme-CPANAuthors-BackPAN-OneHundred','1.02'), 3, '.. not on CPAN');
     is( $cpan->DistIndex('Acme-CPANAuthors-BackPAN-OneHundred','1.03'), 4, '.. on CPAN');
     is( $cpan->DistIndex('Acme-CPANAuthors-BackPAN-OneHundred','1.10'), 0, '.. not known');
+    is( $cpan->DistIndex('Acme-CPANAuthors-BackPAN-OneHundred'), 0, '.. not known');
 
     is( $cpan->OnCPAN('Acme-CPANAuthors-BackPAN-OneHundred','1.02'), 0, '.. not on CPAN');
     is( $cpan->OnCPAN('Acme-CPANAuthors-BackPAN-OneHundred','1.03'), 1, '.. on CPAN');
     is( $cpan->OnCPAN('Acme-CPANAuthors-BackPAN-OneHundred','1.10'), 1, '.. not known, but assume its been uploaded to CPAN');
+    is( $cpan->OnCPAN('Acme-CPANAuthors-BackPAN-OneHundred'), undef, '.. unknown, need a version');
 
     is( $cpan->check_oncpan('Acme-CPANAuthors-BackPAN-OneHundred','1.02'), 0, '.. not on CPAN');
     is( $cpan->check_oncpan('Acme-CPANAuthors-BackPAN-OneHundred','1.03'), 1, '.. on CPAN');
@@ -288,7 +290,7 @@ sub create_database {
         return;
     }
 
-    Labyrinth::Test::Harness::create_mysql_databases($td1,['t/data/test-cpanstats.sql']);
+    $loader->create_mysql_databases($td1,['t/data/test-cpanstats.sql']);
 
     my %opts;
     ($opts{dsn}, $opts{dbuser}, $opts{dbpass}) =  $td1->connection_info();
