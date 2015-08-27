@@ -3,7 +3,7 @@ package Labyrinth::Plugin::CPAN;
 use strict;
 use warnings;
 
-our $VERSION = '3.53';
+our $VERSION = '3.54';
 
 =head1 NAME
 
