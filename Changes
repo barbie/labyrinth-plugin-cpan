@@ -1,6 +1,9 @@
 Changes for Labyrinth-Plugin-CPAN
 =================================
 
+3.55    2015-10-26
+        - added Content file with GetSponsor functionality.
+
 3.54    2015-08-27
         - added distribution index lookups.
 

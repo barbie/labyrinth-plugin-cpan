@@ -1,6 +1,7 @@
 Changes
 INSTALL
 lib/Labyrinth/Plugin/CPAN.pm
+lib/Labyrinth/Plugin/CPAN/Content.pm
 LICENSE
 Makefile.PL
 MANIFEST
