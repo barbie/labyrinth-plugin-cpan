@@ -8,7 +8,7 @@ use ExtUtils::MakeMaker;
 
 WriteMakefile(
     AUTHOR              => 'Barbie <barbie@cpan.org>',
-    NAME                => 'Labyrinth-Plugin-CPAN',
+    NAME                => 'Labyrinth::Plugin::CPAN',
     VERSION_FROM        => 'lib/Labyrinth/Plugin/CPAN.pm',
     ABSTRACT            => 'CPAN Testers plugin for the Labyrinth framework',
     NO_META             => 1,
