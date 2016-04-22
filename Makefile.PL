@@ -17,9 +17,11 @@ WriteMakefile(
         # prereqs
         'Class::Accessor::Fast'     => '0',
         'Email::Address'            => '0',
+        'JSON'                      => '0',
         'Labyrinth'                 => '5.27',
         'Labyrinth::Plugin::Core'   => '5.18',
         'Sort::Versions'            => '0',
+        'WWW::Mechanize'            => '0',
 
         # build/test prereqs
         'IO::File'                  => '0',

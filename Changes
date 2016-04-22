@@ -2,6 +2,7 @@ Changes for Labyrinth-Plugin-CPAN
 =================================
 
         - now requires Test-CPAN-Meta-0.19.
+        - added missing prerequisites.
 
 3.55    2015-10-26
         - added Content file with GetSponsor functionality.
