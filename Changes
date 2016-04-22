@@ -1,6 +1,7 @@
 Changes for Labyrinth-Plugin-CPAN
 =================================
 
+3.56    2016-04-22
         - now requires Test-CPAN-Meta-0.19.
         - added missing prerequisites.
 

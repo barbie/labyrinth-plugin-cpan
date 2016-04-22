@@ -1,6 +1,6 @@
 {
     "name": "Labyrinth-Plugin-CPAN",
-    "version": "3.55",
+    "version": "3.56",
     "abstract": "CPAN Testers plugin for the Labyrinth framework",
     "author": [
         "Barbie (BARBIE) <barbie@cpan.org>"
@@ -52,11 +52,11 @@
     "provides": {
         "Labyrinth::Plugin::CPAN": {
             "file": "lib/Labyrinth/Plugin/CPAN.pm",
-            "version": "3.55"
+            "version": "3.56"
         },
         "Labyrinth::Plugin::CPAN::Content": {
             "file": "lib/Labyrinth/Plugin/CPAN/Content.pm",
-            "version": "3.55"
+            "version": "3.56"
         }
     },
     "no_index": {
